@@ -5,13 +5,11 @@ const GROUP_NUMBER = 6;
 
 class StudentGroup extends Component {
     getStudentsOfGroup = (index) => {
-        const students =  this.props.group.map((group, i) => {
+        return this.props.group.map((group, i) => {
             if (group === index) {
                 return this.props.students[i]
             }
         }).filter(item => item);
-        console.log(students);
-        return students;
     };
 
     renderStudent = (student) => {
@@ -29,7 +27,7 @@ class StudentGroup extends Component {
 
     renderGroup = (index) => {
         return (
-            <table>
+            <table key={index}>
                 <thead>
                     <tr>
                         <th>{`${index} 组`}</th>
