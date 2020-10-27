@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Tag } from 'antd';
+import { Button, Tag, message } from 'antd';
 
 const GROUP_NUMBER = 6;
 
@@ -51,11 +51,47 @@ class StudentGroup extends Component {
         return [...Array(GROUP_NUMBER).keys()].map(index => this.renderGroup(index + 1));
     };
 
+    getGroup = () => {
+        fetch('http://localhost:8080/group', {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then((responce) => {
+            return responce.json();
+        }).then((group) => {
+            this.props.setGroup(group);
+        }).catch((error) => {
+            message.error('获取分组失败');
+            console.log(error);
+        });
+    };
+
+    redistributeGroup = () => {
+        fetch('http://localhost:8080/group', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then((responce) => {
+            return responce.json();
+        }).then((group) => {
+            this.props.setGroup(group);
+        }).catch((error) => {
+            message.error('重新分组失败');
+            console.log(error);
+        });
+    };
+
+    componentDidMount() {
+        this.getGroup();
+    }
+
     render() {
         return (
             <>
                 <h2>分组列表</h2>
-                <Button type="primary" danger>分组学员</Button>
+                <Button type="primary" danger onClick={this.redistributeGroup}>分组学员</Button>
                 {this.renderGroups()}
             </>
         );

@@ -28,7 +28,7 @@ class App extends Component {
       <div data-testid="app" className="App">
         <StudentGroup 
           students={this.state.students}
-          group={[1,2,3,4,5,6,1,2,3]}
+          group={this.state.group}
           setGroup={this.setGroup}
         />
         <StudentList 
