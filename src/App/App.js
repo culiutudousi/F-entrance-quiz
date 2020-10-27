@@ -4,6 +4,10 @@ import './App.scss';
 import StudentList from './components/StudentList';
 
 class App extends Component {
+  state = {
+    students: [],
+    group: []
+  }
   render() {
     return (
       <div data-testid="app" className="App">

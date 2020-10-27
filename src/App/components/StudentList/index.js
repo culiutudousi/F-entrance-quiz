@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Tag, Input, Tooltip } from 'antd';
+import { Tag, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import './index.css';
 
 class StudentList extends Component {
     state = {
-        students: [
-            {id: 1, name: "成吉思汗"},
-            {id: 2, name: "鲁班七号"}
-        ],
+        students: [],
         inputVisible: false,
         inputValue: ''
     };
@@ -21,28 +19,76 @@ class StudentList extends Component {
     };
 
     handleInputConfirm = () => {
-        const { inputValue } = this.state;
+        const { inputValue, students } = this.state;
+        this.setState({ inputVisible: false });
         console.log('add student: ', inputValue);
+        if (!inputValue) { return; }
+        fetch(`http://localhost:8080/student?studentName=${inputValue}`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then((responce) => {
+            return responce.json();
+        }).then((id) => {
+            students.push({
+                id: id,
+                name: inputValue
+            })
+            this.setState({
+                students: students
+            });
+        }).catch((error) => {
+            message.error('添加学员失败');
+            console.log(error);
+        });
+    };
+
+    handleInputCancel = () => {
+        this.setState({ inputVisible: false });
     };
 
     saveInputRef = input => {
         this.input = input;
     };
 
+    getStudents = () => {
+        fetch('http://localhost:8080/student', {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).then((responce) => {
+            return responce.json();
+        }).then((students) => {
+            console.log(students);
+            this.setState({
+                students: students
+            });
+        }).catch((error) => {
+            message.error('获取学员失败');
+            console.log(error);
+        });
+    }
+
+    componentDidMount() {
+        this.getStudents();
+    }
+
     render() {
         const { students, inputVisible, inputValue } = this.state;
         return (
-            <div>
+            <>
                 <h2>学员列表</h2>
                 {students.map((student) => {
-                    const name = student.name;
+                    const name = `${student.id}. ${student.name}`;
                     return (
                         <Tag
                             className="edit-tag"
                             key={name}
                             closable={false}
                         >
-                            {student.name}
+                            {name}
                         </Tag>
                     );
                 })}
@@ -54,7 +100,7 @@ class StudentList extends Component {
                         className="tag-input"
                         value={inputValue}
                         onChange={this.handleInputChange}
-                        onBlur={this.handleInputConfirm}
+                        onBlur={this.handleInputCancel}
                         onPressEnter={this.handleInputConfirm}
                     />
                 )}
@@ -63,7 +109,7 @@ class StudentList extends Component {
                         <PlusOutlined />添加学员
                     </Tag>
                 )}
-            </div>
+            </>
         );
     }
 }
