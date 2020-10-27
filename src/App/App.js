@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import 'antd/dist/antd.css';
 import './App.scss';
+import StudentList from './components/StudentList';
 
 class App extends Component {
   render() {
     return (
       <div data-testid="app" className="App">
-        Hello World
+        <StudentList />
       </div>
     );
   }
