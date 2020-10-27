@@ -1,6 +1,11 @@
 .edit-tag {
     user-select: none;
     background-color: #eeeeee;
+    width: 78px;
+    text-align: center;
+}
+.site-tag-plus {
+    width: 78px;
 }
 .tag-input {
     width: 78px;

@@ -3,6 +3,7 @@ import { message } from 'antd';
 import 'antd/dist/antd.css';
 import './App.scss';
 import StudentList from './components/StudentList';
+import StudentGroup from './components/StudentGroup';
 
 class App extends Component {
   state = {
@@ -16,9 +17,20 @@ class App extends Component {
     });
   };
 
+  setGroup = (group) => {
+    this.setState({
+      group: group
+    });
+  };
+
   render() {
     return (
       <div data-testid="app" className="App">
+        <StudentGroup 
+          students={this.state.students}
+          group={[1,2,3,4,5,6,1,2,3]}
+          setGroup={this.setGroup}
+        />
         <StudentList 
           students={this.state.students} 
           setStudents={this.setStudents} 

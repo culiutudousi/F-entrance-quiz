@@ -5,7 +5,6 @@ import './index.css';
 
 class StudentList extends Component {
     state = {
-        students: [],
         inputVisible: false,
         inputValue: ''
     };
