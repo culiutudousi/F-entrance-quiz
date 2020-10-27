@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tag, Input, message } from 'antd';
+import { Tag, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
 
@@ -19,9 +19,12 @@ class StudentList extends Component {
     };
 
     handleInputConfirm = () => {
-        const { inputValue, students } = this.state;
-        this.setState({ inputVisible: false });
-        console.log('add student: ', inputValue);
+        const { inputValue } = this.state;
+        const { students } = this.props;
+        this.setState({ 
+            inputVisible: false,
+            inputValue: ''
+        });
         if (!inputValue) { return; }
         fetch(`http://localhost:8080/student?studentName=${inputValue}`, {
             method: 'POST',
@@ -35,9 +38,7 @@ class StudentList extends Component {
                 id: id,
                 name: inputValue
             })
-            this.setState({
-                students: students
-            });
+            this.props.setStudents(students);
         }).catch((error) => {
             message.error('添加学员失败');
             console.log(error);
@@ -61,10 +62,7 @@ class StudentList extends Component {
         }).then((responce) => {
             return responce.json();
         }).then((students) => {
-            console.log(students);
-            this.setState({
-                students: students
-            });
+            this.props.setStudents(students);
         }).catch((error) => {
             message.error('获取学员失败');
             console.log(error);
@@ -76,11 +74,11 @@ class StudentList extends Component {
     }
 
     render() {
-        const { students, inputVisible, inputValue } = this.state;
+        const { inputVisible, inputValue } = this.state;
         return (
             <>
                 <h2>学员列表</h2>
-                {students.map((student) => {
+                {this.props.students.map((student) => {
                     const name = `${student.id}. ${student.name}`;
                     return (
                         <Tag
