@@ -1,14 +1,15 @@
+/* TODO GTB-3: - 可以尝试使用scss */
 .edit-tag {
-    user-select: none;
-    background-color: #eeeeee;
-    width: 78px;
-    text-align: center;
+  user-select: none;
+  background-color: #eeeeee;
+  width: 78px;
+  text-align: center;
 }
 .site-tag-plus {
-    width: 78px;
+  width: 78px;
 }
 .tag-input {
-    width: 78px;
-    margin-right: 8px;
-    vertical-align: top;
+  width: 78px;
+  margin-right: 8px;
+  vertical-align: top;
 }
